@@ -9,9 +9,17 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@mantine/core": "^6.0.14",
+    "@mantine/dates": "^6.0.14",
+    "@mantine/hooks": "^6.0.14",
+    "@tabler/icons-react": "^2.22.0",
     "autoprefixer": "10.4.14",
+    "dayjs": "^1.11.8",
     "eslint": "8.43.0",
     "eslint-config-next": "13.4.6",
+    "mantine-react-table": "^1.0.0-beta.13",
+    "mysql": "^2.18.1",
     "next": "13.4.6",
     "postcss": "8.4.24",
     "react": "18.2.0",
