@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import DataTable from "@/components/DataTable";
 import InputText from "@/components/InputText";
 
+import MOCK_DATA from "@/components/mock-data.json";
+
 const Home = () => {
 	const [host, setHost] = useState("");
 	const [userName, setUserName] = useState("");
@@ -39,6 +41,14 @@ const Home = () => {
 		} catch (error) {
 			console.error(error);
 		}
+	};
+
+	const handleSaveCell = (cell, value) => {
+		const newJsonData = jsonData.length > 0 ? [...jsonData] : [...MOCK_DATA];
+
+		newJsonData[cell.row.index][cell.column.id] = value;
+
+		setJsonData(newJsonData);
 	};
 
 	return (
@@ -97,7 +107,7 @@ const Home = () => {
 			</form>
 
 			{/* <div className="p-4 h-screen w-full dark:bg-zinc-900 grow"> */}
-			<DataTable jsonData={jsonData} />
+			<DataTable jsonData={jsonData} handleSaveCell={handleSaveCell} />
 			{/* </div> */}
 		</main>
 	);

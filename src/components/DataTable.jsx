@@ -1,10 +1,10 @@
-import React, { useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import { MantineReactTable, useMantineReactTable } from "mantine-react-table";
 import { MantineProvider, useMantineTheme } from "@mantine/core";
 
 import MOCK_DATA from "@/components/mock-data.json";
 
-const DataTable = ({ jsonData }) => {
+const DataTable = ({ jsonData, handleSaveCell }) => {
 	const globalTheme = useMantineTheme();
 	//should be memoized or stable
 	const data = useMemo(
@@ -15,7 +15,7 @@ const DataTable = ({ jsonData }) => {
 	const columns = useMemo(() => {
 		const col = [];
 		Object.keys(jsonData.length > 0 ? jsonData[0] : MOCK_DATA[0]).forEach(
-			(header) =>
+			(header, index) =>
 				col.push({
 					header,
 					accessorKey: header,
@@ -27,6 +27,7 @@ const DataTable = ({ jsonData }) => {
 						);
 					},
 					enableColumnFilterModes: true,
+					enableEditing: index === 0 || header === "id" ? false : true,
 				})
 		);
 		return col;
@@ -41,6 +42,9 @@ const DataTable = ({ jsonData }) => {
 			// showSkeletons: true,
 		},
 		enableColumnFilterModes: true,
+		enablePinning: true,
+		enableEditing: true,
+		editingMode: "cell",
 		mantinePaperProps: {
 			sx: {
 				width: "100%",
@@ -80,6 +84,11 @@ const DataTable = ({ jsonData }) => {
 				}`,
 			}),
 		},
+		mantineEditTextInputProps: ({ cell }) => ({
+			onBlur: (e) => {
+				handleSaveCell(cell, e.target.value);
+			},
+		}),
 	});
 
 	return (
