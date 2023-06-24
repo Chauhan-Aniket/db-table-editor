@@ -10,7 +10,7 @@ const Home = () => {
 	const [password, setPassword] = useState("");
 	const [tableName, setTableName] = useState("");
 	const [databaseName, setDatabaseName] = useState("");
-	const [jsonData, setJsonData] = useState([]);
+	const [jsonData, setJsonData] = useState(MOCK_DATA);
 
 	const fetchData = async (e) => {
 		e.preventDefault();
@@ -43,12 +43,47 @@ const Home = () => {
 		}
 	};
 
-	const handleSaveCell = (cell, value) => {
+	console.log(jsonData[0]);
+	const handleSaveCell = async (cell, value) => {
 		const newJsonData = jsonData.length > 0 ? [...jsonData] : [...MOCK_DATA];
 
 		newJsonData[cell.row.index][cell.column.id] = value;
 
 		setJsonData(newJsonData);
+
+		const updatedData = {
+			[newJsonData[cell.row.index].id]: value,
+		};
+
+		try {
+			// Send the updated data to the API for updating the SQL database
+			const response = await fetch("/api/update", {
+				method: "POST",
+				headers: {
+					"Access-Control-Allow-Origin": ["*"],
+					"Access-Control-Allow-Headers": "Content-Type",
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					host,
+					userName,
+					password,
+					databaseName,
+					tableName,
+					columnName: cell.column.id,
+					updatedData,
+				}),
+			});
+
+			if (response.ok) {
+				const data = await response.json();
+				console.log(data);
+			} else {
+				console.error("Failed to update data in the SQL database");
+			}
+		} catch (error) {
+			console.error(error);
+		}
 	};
 
 	return (
