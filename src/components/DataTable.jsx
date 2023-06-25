@@ -1,11 +1,9 @@
-import React, { useState, useMemo } from "react";
+import React, { useMemo } from "react";
 import { MantineReactTable, useMantineReactTable } from "mantine-react-table";
-import { MantineProvider, useMantineTheme } from "@mantine/core";
 
 import MOCK_DATA from "@/components/mock-data.json";
 
 const DataTable = ({ jsonData, handleSaveCell }) => {
-	const globalTheme = useMantineTheme();
 	//should be memoized or stable
 	const data = useMemo(
 		() => (jsonData.length > 0 ? jsonData : MOCK_DATA),
@@ -48,7 +46,7 @@ const DataTable = ({ jsonData, handleSaveCell }) => {
 		mantinePaperProps: {
 			sx: {
 				width: "100%",
-				height: "100%",
+				height: "100vh",
 				display: "flex",
 				flexDirection: "column",
 				borderWidth: 0,
@@ -91,19 +89,7 @@ const DataTable = ({ jsonData, handleSaveCell }) => {
 		}),
 	});
 
-	return (
-		<MantineProvider
-			theme={{
-				...globalTheme,
-				primaryColor: "blue",
-				colorScheme: "dark",
-			}}
-			withGlobalStyles
-			withNormalizeCS
-		>
-			<MantineReactTable table={table} />
-		</MantineProvider>
-	);
+	return <MantineReactTable table={table} />;
 };
 
 export default DataTable;
